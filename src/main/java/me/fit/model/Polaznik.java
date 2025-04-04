@@ -2,6 +2,7 @@ package me.fit.model;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Polaznik {
 	private String ime;
@@ -73,6 +74,32 @@ public class Polaznik {
 	public void setKursevi(List<Kurs> kursevi) {
 		this.kursevi = kursevi;
 	}
+
+	@Override
+	public String toString() {
+		return "Polaznik [ime=" + ime + ", prezime=" + prezime + ", brIndeksa=" + brIndeksa + ", datumRodjenja="
+				+ datumRodjenja + ", datumPocetka=" + datumPocetka + ", kursevi=" + kursevi + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(brIndeksa, datumPocetka, datumRodjenja, ime, kursevi, prezime);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Polaznik other = (Polaznik) obj;
+		return Objects.equals(brIndeksa, other.brIndeksa) && Objects.equals(datumPocetka, other.datumPocetka)
+				&& Objects.equals(datumRodjenja, other.datumRodjenja) && Objects.equals(ime, other.ime)
+				&& Objects.equals(kursevi, other.kursevi) && Objects.equals(prezime, other.prezime);
+	}
     
+	
     
 }

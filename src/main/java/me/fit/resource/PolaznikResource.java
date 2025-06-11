@@ -111,4 +111,33 @@ public class PolaznikResource {
 
         return holidays;
     }
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPolaznik(@PathParam("id") Long id) {
+        Polaznik polaznik = polaznikRepository.findById(id);
+        if (polaznik == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Polaznik s ID-om " + id + " nije pronađen")
+                    .build();
+        }
+
+        // Učitavanje fajla ako postoji putanja
+        String filePath = polaznik.getFilePath();
+        if (filePath != null && java.nio.file.Files.exists(java.nio.file.Paths.get(filePath))) {
+            try {
+                byte[] fileContent = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(filePath));
+                String base64Content = java.util.Base64.getEncoder().encodeToString(fileContent);
+                return Response.ok()
+                        .entity("{\"polaznik\": " + polaznik + ", \"fileContent\": \"" + base64Content + "\"}")
+                        .build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("Greška pri učitavanju fajla: " + e.getMessage())
+                        .build();
+            }
+        }
+
+        return Response.ok(polaznik).build();
+    }
 }

@@ -27,4 +27,13 @@ public class PolaznikRepository {
     public Holiday saveHoliday(Holiday holiday) {
         return em.merge(holiday);
     }
+
+    public Polaznik findById(Long id) {
+        return em.find(Polaznik.class, id);
+    }
+
+    @Transactional
+    public Polaznik savePolaznik(Polaznik polaznik) {
+        return em.merge(polaznik);
+    }
 }
